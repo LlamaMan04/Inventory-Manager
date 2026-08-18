@@ -1,9 +1,12 @@
+import { useState } from 'react';
 import { BrowserRouter, Routes, Route, Link } from 'react-router';
 import Dashboard from './Dashboard';
 import TransactionForm from './TransactionForm';
 import StockTable from './StockTable';
 
 export default function AppLayout({ }) {
+  const [activeLink, setActiveLink] = useState("/");
+
   return (
     <BrowserRouter>
       <div className="app-container">
@@ -14,15 +17,27 @@ export default function AppLayout({ }) {
         <div className="main-layout">
           <aside className="sidebar">
 
-            <Link className='nav-link' to="/">
+            <Link 
+              className={`nav-link ${activeLink === "/" ? "active" : ""}`} 
+              to="/"
+              onClick={() => setActiveLink("/")}
+            >
               Dashboard
             </Link>
 
-            <Link className='nav-link' to="/stock">
+            <Link 
+              className={`nav-link ${activeLink === "/stock" ? "active" : ""}`} 
+              to="/stock"
+              onClick={() => setActiveLink("/stock")}
+            >
               Stock Levels
             </Link>
 
-            <Link className='nav-link' to="transfer">
+            <Link 
+              className={`nav-link ${activeLink === "/transfer" ? "active" : ""}`} 
+              to="/transfer"
+              onClick={() => setActiveLink("/transfer")}
+            >
               Transfer Items
             </Link>
 
