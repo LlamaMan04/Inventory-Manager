@@ -1,0 +1,98 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.top-nav {
+  background: #222;
+  color: #fff;
+  padding: 1rem;
+}
+
+.main-layout {
+  display: flex;
+  flex: 1;
+}
+
+.sidebar {
+  box-sizing: border-box;
+  width: 220px;
+  background: #f4f4f4;
+  padding: 1rem;
+}
+
+.nav-link {
+  display: block;
+  text-decoration: none;
+  color: black;
+  margin: 10px 5px;
+  padding: 5px;
+  border: 1px solid #f4f4f4;
+  border-radius: 5px;
+}
+
+.nav-link:hover {
+  border: 1px solid gray;
+  background-color: rgba(177, 177, 177, 0.301);
+}
+
+.nav-link:visited {
+  text-decoration: none;
+  color: black;
+}
+
+.content-area {
+  flex: 1;
+  padding: 2rem;
+}
+
+.stock-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.stock-table th,
+.stock-table td {
+  border-bottom: 1px solid #ddd;
+  padding: 0.5rem;
+}
+
+.overlay-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.overlay-content {
+  background: #ffffff;
+  padding: 24px;
+  border-radius: 8px;
+  position: relative;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.auth-close-button {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
