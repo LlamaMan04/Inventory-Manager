@@ -1,2 +1,4 @@
-/Inventory schema.sql
+Inventory schema.sql
+Requestly
 *.env
+backend\node_modules
