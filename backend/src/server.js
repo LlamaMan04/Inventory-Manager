@@ -6,7 +6,6 @@ import { connectDB, disconnectDB } from './config/db.js'
 import stockRoutes from './routes/stockRoutes.js'
 import authRoutes from './routes/authRoutes.js'
 
-
 const startServer = async () => {
   // Connect to the database
   await connectDB();
