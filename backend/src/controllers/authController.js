@@ -102,6 +102,10 @@ const removeUser = async (req, res) => {
     return res.status(404).json({ message: "User not found" });
   }
 
+  if (userToDelete.id === req.user.id) {
+    return res.status(400).json({ message: "You cannot delete your own account" });
+  }
+
   await prisma.user.delete({
     where: { id: userId },
   });
@@ -112,4 +116,46 @@ const removeUser = async (req, res) => {
   });
 }
 
-export { addUser, login, logout, removeUser }
+const updatePassword = async (req, res) => {
+  const { oldPassword, newPassword } = req.body;
+
+  // Verify the current password
+  const isMatch = await bcrypt.compare(oldPassword, req.user.password);
+
+  if (!isMatch) {
+    return res.status(401).json({ message: "Cannot update password." });
+  }
+
+  // Hash the new password
+  const hashedNewPassword = await bcrypt.hash(newPassword, 12);
+
+  // Update the user's password
+  await prisma.user.update({
+    where: { id: req.user.id },
+    data: { password: hashedNewPassword }
+  });
+
+  res.status(200).json({
+    status: "success",
+    message: "Password updated successfully"
+  });
+}
+
+const getAllUsers = async (req, res) => {
+  const users = await prisma.user.findMany({
+    select: {
+      id: true,
+      username: true,
+      role: true
+    }
+  });
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      users
+    }
+  });
+}
+
+export { addUser, login, logout, removeUser, updatePassword, getAllUsers }
