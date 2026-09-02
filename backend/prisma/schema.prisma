@@ -24,19 +24,31 @@ model Item {
   id          Int      @id @default(autoincrement())
   name        String
   description String?
+  barcode     String?  @unique
 
   createdAt   DateTime @default(now())
 
-  stock       Stock?  
+  stock       Stock?
 }
 
 model Stock {
   id          Int      @id @default(autoincrement())
   itemId      Int      @unique
   quantity    Int
-  location    String
+  locationId  Int
 
   createdAt   DateTime @default(now())
 
   item        Item     @relation(fields: [itemId], references: [id], onDelete: Restrict)
+  location    Location @relation(fields: [locationId], references: [id], onDelete: Restrict)
+}
+
+model Location {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  description String?
+
+  createdAt   DateTime @default(now())
+
+  stock       Stock[]
 }

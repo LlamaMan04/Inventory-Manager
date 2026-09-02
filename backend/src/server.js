@@ -5,6 +5,8 @@ import { connectDB, disconnectDB } from './config/db.js'
 // Import routes
 import stockRoutes from './routes/stockRoutes.js'
 import authRoutes from './routes/authRoutes.js'
+import itemRoutes from './routes/itemRoutes.js'
+import locationRoutes from './routes/locationRoutes.js'
 
 const startServer = async () => {
   // Connect to the database
@@ -19,6 +21,8 @@ const startServer = async () => {
 
   // Apply routes
   app.use("/stock", stockRoutes);
+  app.use("/item", itemRoutes);
+  app.use("/location", locationRoutes);
   app.use("/auth", authRoutes);
 
   const PORT = process.env.SERVER_PORT || 5001;

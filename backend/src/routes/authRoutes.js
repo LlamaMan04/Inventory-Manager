@@ -5,12 +5,13 @@ import { validateRequest } from "../middlewares/validateMiddleware.js";
 import { addUserSchema, loginSchema, updatePasswordSchema } from "../validators/authValidators.js";
 
 const router = express.Router();
+const lockAdmin = [verifyToken, verifyAdmin];
 
-router.get("/users", [verifyToken, verifyAdmin], getAllUsers);
-router.post("/register", [verifyToken, verifyAdmin, validateRequest(addUserSchema)], addUser);
+router.get("/users", lockAdmin, getAllUsers);
+router.post("/register", lockAdmin, validateRequest(addUserSchema), addUser);
 router.post("/", validateRequest(loginSchema), login);
 router.post("/logout", verifyToken, logout);
-router.delete("/remove/:id", [verifyToken, verifyAdmin], removeUser);
-router.post("/update-password", [verifyToken, validateRequest(updatePasswordSchema)], updatePassword);
+router.delete("/remove/:id", lockAdmin, removeUser);
+router.post("/update-password", verifyToken, validateRequest(updatePasswordSchema), updatePassword);
 
 export default router;

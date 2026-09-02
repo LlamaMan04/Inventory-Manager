@@ -12,6 +12,6 @@ export const loginSchema = z.object({
 });
 
 export const updatePasswordSchema = z.object({
-  oldPassword: z.string().min(6),
+  oldPassword: z.string(),
   newPassword: z.string().min(6, "Password must be at least 6 characters long"),
 });
