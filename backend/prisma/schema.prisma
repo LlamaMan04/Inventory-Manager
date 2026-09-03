@@ -28,14 +28,16 @@ model Item {
 
   createdAt   DateTime @default(now())
 
-  stock       Stock?
+  stock       Stock[]
 }
 
 model Stock {
   id          Int      @id @default(autoincrement())
-  itemId      Int      @unique
+  itemId      Int
   quantity    Int
   locationId  Int
+
+  @@unique([itemId, locationId])
 
   createdAt   DateTime @default(now())
 

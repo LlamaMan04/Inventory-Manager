@@ -2,7 +2,12 @@ import { prisma } from "../config/db.js";
 
 export const getAllStock = async (req, res) => {
   try {
-    const stocks = await prisma.stock.findMany();
+    const stocks = await prisma.stock.findMany({
+      include: {
+        item: true,
+        location: true
+      }
+    });
     res.status(200).json({ 
       status: "success",
       data: stocks,
@@ -20,7 +25,11 @@ export const getStockById = async (req, res) => {
   const { id } = req.params;
   try {
     const stock = await prisma.stock.findUnique({
-      where: { id: parseInt(id) }
+      where: { id: parseInt(id) },
+      include: {
+        item: true,
+        location: true
+      }
     });
     if (!stock) {
       return res.status(404).json({ 
