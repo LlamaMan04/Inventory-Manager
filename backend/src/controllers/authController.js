@@ -116,6 +116,22 @@ const removeUser = async (req, res) => {
   });
 }
 
+const updateUserRole = async (req, res) => {
+  const userId = parseInt(req.params.id);
+
+  const { role } = req.body;
+
+  try {
+    const user = await prisma.user.update({
+      where: { id: userId },
+      data: { role }
+    });
+    res.status(200).json({ status: "success", data: { id: user.id, username: user.username, role: user.role }, message: "User role updated successfully" });
+  } catch (error) {
+    res.status(400).json({ status: "fail", message: "Unable to update user role" });
+  }
+}
+
 const updatePassword = async (req, res) => {
   const { oldPassword, newPassword } = req.body;
 
@@ -158,4 +174,4 @@ const getAllUsers = async (req, res) => {
   });
 }
 
-export { addUser, login, logout, removeUser, updatePassword, getAllUsers }
+export { addUser, login, logout, removeUser, updateUserRole, updatePassword, getAllUsers }

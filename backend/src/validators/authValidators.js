@@ -15,3 +15,11 @@ export const updatePasswordSchema = z.object({
   oldPassword: z.string(),
   newPassword: z.string().min(6, "Password must be at least 6 characters long"),
 });
+
+export const updateUserRoleSchema = z.object({
+  role: z.enum(["ADMIN", "USER"], "Role must be either 'ADMIN' or 'USER'"),
+});
+
+export const idParamSchema = z.object({
+  id: z.coerce.number().int().positive("ID must be a positive integer"),
+});
