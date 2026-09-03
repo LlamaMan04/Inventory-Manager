@@ -1,4 +1,5 @@
 import express from 'express'
+import cors from 'cors'
 import 'dotenv/config.js'
 import { connectDB, disconnectDB } from './config/db.js'
 
@@ -14,6 +15,14 @@ const startServer = async () => {
 
   // Start the Express server
   const app = express();
+
+  // Enable CORS for specific routes
+  app.use(cors({
+    origin: ['http://localhost:5173'], // Adjust this to your frontend URL
+    methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    optionsSuccessStatus: 200
+  }));
 
   // Body parsing middlewares
   app.use(express.json());
