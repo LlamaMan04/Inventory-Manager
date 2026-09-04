@@ -2,7 +2,7 @@
 :root { 
   font-family: 'Space Grotesk', sans-serif; 
   color: #182321; 
-  background: #f4f6f0; 
+  background: #f0f6f6; 
   font-synthesis: none; 
 }
 
@@ -49,7 +49,7 @@ a {
   place-items: center; 
   width: 37px; 
   height: 37px; 
-  background: #d4f36d; 
+  background: #78e8f0; 
   color: #182321; 
   font-weight: 700; 
 } 
@@ -72,14 +72,14 @@ a {
 }
 
 .connection { 
-  color: #d4f36d; 
+  color: #6deaf3; 
 }
 
 .connection i { 
   display: inline-block; 
   width: 7px; 
   height: 7px; 
-  background: #d4f36d; 
+  background: #6deaf3; 
   border-radius: 50%; 
   margin-right: 7px; 
 }
@@ -87,8 +87,12 @@ a {
 .link-button { 
   background: none; 
   border: 0; 
-  color: #d4f36d; 
+  color: #6deaf3;
   padding: 0; 
+}
+
+.back-button {
+  color: #0f12d3;
 }
 
 .main-layout { 
@@ -99,7 +103,7 @@ a {
 .sidebar { 
   width: 245px; 
   flex: 0 0 245px; 
-  background: #e7ece2; 
+  background: #d3e4e9; 
   padding: 36px 22px 22px; 
   display: flex; 
   flex-direction: column; 
@@ -132,7 +136,7 @@ a {
 }
 
 .nav-link:hover, .nav-link.active { 
-  background: #d4f36d; 
+  background: #6deaf3; 
   color: #182321; 
 }
 
@@ -194,8 +198,8 @@ a {
 }
 
 .page-heading h1::after { 
-  content: '.'; 
-  color: #99b53b; 
+  content: ' -'; 
+  color: #6deaf3; 
 }
 
 .page h2 { 
@@ -207,7 +211,7 @@ a {
 .page em, .connect-panel em { 
   font-family: Georgia, serif; 
   font-weight: 400; 
-  color: #657c29; 
+  color: #0f12d3; 
 }
 
 .metric-grid { 
@@ -242,7 +246,7 @@ a {
 .feature-band { 
   margin-top: 14px; 
   padding: 50px; 
-  background: #d4f36d; 
+  background: #adf8ff; 
   display: flex; 
   justify-content: space-between; 
   align-items: end; 
@@ -360,13 +364,13 @@ td small {
 
 .stack-form input:focus, .stack-form select:focus { 
   border-color: #8fae35; 
-  box-shadow: 0 0 0 3px #d4f36d66; 
+  box-shadow: 0 0 0 3px #6deaf366; 
 }
 
 .segmented { 
   display: grid; 
   grid-template-columns: repeat(3, 1fr); 
-  background: #e7ece2; 
+  background: #e2ebec; 
   padding: 4px; 
   margin-bottom: 10px; 
 }
@@ -442,7 +446,7 @@ td small {
 .modal-backdrop { 
   position: fixed; 
   inset: 0; 
-  background: #182321aa; 
+  background: #182023aa; 
   display: grid; 
   place-items: center; 
   z-index: 5; 
@@ -519,7 +523,7 @@ td small {
   min-height: 100vh; 
   display: grid; 
   grid-template-columns: 1.1fr .9fr; 
-  background: #f4f6f0; 
+  background: #f0f6f6; 
 }
 
 .connect-panel { 
@@ -555,13 +559,13 @@ td small {
 }
 
 .connect-art span { 
-  color: #d4f36d; 
+  color: #6deaf3; 
   font: 11px 'DM Mono', monospace; 
   letter-spacing: .1em; 
 }
 
 .connect-art strong { 
-  color: #d4f36d; 
+  color: #8ae7ee; 
   font-size: min(28vw, 300px); 
   font-weight: 500; 
   line-height: .8; 
