@@ -1,6 +1,7 @@
 import { prisma } from "../config/db.js";
-import { generateToken } from "../utils/generateToken.js";
+import { generateJWT, generateRefreshToken } from "../utils/generateToken.js";
 import bcrypt from "bcryptjs";
+import crypto from "crypto";
 
 const addUser = async (req, res) => {
   const { username, password, role } = req.body;
@@ -26,9 +27,6 @@ const addUser = async (req, res) => {
     }
   });
 
-  // Generate JWT token
-  const token = generateToken(user.id, res);
-
   res.status(201).json({ 
     status: "success",
     data: {
@@ -36,7 +34,6 @@ const addUser = async (req, res) => {
       username: user.username,
       role: user.role
     },
-    token,
     message: "User created successfully"
   });
 }
@@ -60,8 +57,9 @@ const login = async (req, res) => {
     return res.status(401).json({ message: "Invalid credentials" });
   }
 
-  // Generate JWT token
-  const token = generateToken(user.id, res);
+  // Generate tokens
+  const token = generateJWT(user.id, res);
+  const refreshToken = await generateRefreshToken(user.id, res);
 
   // If we reach here, the user has successfully logged in
   res.status(201).json({ 
@@ -77,7 +75,23 @@ const login = async (req, res) => {
 }
 
 const logout = async (req, res) => {
-  res.cookie("jwt", "", {
+  const refreshToken = req.cookies?.refreshToken;
+
+  // Delete the refresh token from the database
+  if (refreshToken) {
+    console.log("Deleting refresh token from database");
+    const hashedToken = crypto.createHash("sha256").update(refreshToken).digest("hex");
+
+    await prisma.session.delete({
+      where: { refreshToken: hashedToken }
+    });
+  }
+
+  res.clearCookie("jwt", {
+    httpOnly: true,
+    expires: new Date(0), // Set the cookie to expire immediately
+  });
+  res.clearCookie("refreshToken", {
     httpOnly: true,
     expires: new Date(0), // Set the cookie to expire immediately
   });
@@ -86,6 +100,38 @@ const logout = async (req, res) => {
     status: "success",
     message: "Logged out successfully" 
   });
+}
+
+const refreshJWT = async (req, res) => {
+  console.log("Refreshing JWT token");
+  const refreshToken = req.cookies?.refreshToken;
+
+  if (!refreshToken) {
+    return res.status(401).json({ message: "Not authorized to access this route." });
+  }
+
+  // Hash the received refresh token
+  const hashedToken = crypto.createHash("sha256").update(refreshToken).digest("hex");
+  console.log("Successfully hashed the refresh token");
+  // Verify the refresh token exists in the database
+  const session = await prisma.session.findUnique({
+    where: { refreshToken: hashedToken }
+  });
+  console.log("Found session:", session);
+  if (!session || session.expiresAt < new Date()) {
+    return res.status(401).json({ message: "Not authorized to access this route." });
+  }
+  console.log("Session is valid, generating new JWT token");
+  // Generate a new JWT token
+  const token = generateJWT(session.userId, res);
+
+  res.status(200).json({ 
+    status: "success",
+    token,
+    userId: session.userId,
+    message: "JWT token refreshed successfully" 
+  });
+  console.log("JWT token refreshed successfully");
 }
 
 const removeUser = async (req, res) => {
@@ -174,4 +220,15 @@ const getAllUsers = async (req, res) => {
   });
 }
 
-export { addUser, login, logout, removeUser, updateUserRole, updatePassword, getAllUsers }
+const getMyUser = async (req, res) => {
+  return res.status(200).json({
+    status: "success",
+    data: { 
+      id: req.user.id,
+      username: req.user.username,
+      role: req.user.role
+    }
+  });
+}
+
+export { addUser, login, logout, refreshJWT, removeUser, updateUserRole, updatePassword, getAllUsers, getMyUser }

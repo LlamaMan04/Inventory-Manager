@@ -1,5 +1,6 @@
 import express from 'express'
 import cors from 'cors'
+import cookieParser from 'cookie-parser'
 import 'dotenv/config.js'
 import { connectDB, disconnectDB } from './config/db.js'
 
@@ -18,15 +19,17 @@ const startServer = async () => {
 
   // Enable CORS for specific routes
   app.use(cors({
-    origin: ['http://localhost:5173'], // Adjust this to your frontend URL
+    origin: [process.env.FRONTEND_URL], 
     methods: ['GET', 'POST', 'PATCH', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
-    optionsSuccessStatus: 200
+    optionsSuccessStatus: 200,
+    credentials: true //Allow cookies to be sent for authentication
   }));
 
   // Body parsing middlewares
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
+  app.use(cookieParser());
 
   // Apply routes
   app.use("/stock", stockRoutes);

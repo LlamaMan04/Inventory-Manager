@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { BrowserRouter } from 'react-router'
-import { createApi, normalizeApiUrl } from './api'
+import { createApi } from './api'
 
 import { Shell } from './components/Shell'
 import { ConnectScreen } from './components/Pages/ConnectScreen'
@@ -15,9 +15,9 @@ export default function App() {
   const [data, setData] = useState(blank)
   const [error, setError] = useState('')
 
-  const api = useMemo(() => createApi(apiUrl, token), [apiUrl, token])
+  const api = useMemo(() => createApi(apiUrl, token, setToken), [apiUrl, token])
 
-  // Refresh data from API
+  // Helper function to refresh data from API
   const refresh = async () => {
     const [items, locations, stocks] = await Promise.all([api.items(), api.locations(), api.stocks()])
     setData((current) => ({ 
@@ -41,11 +41,45 @@ export default function App() {
           stocks: stocks.data 
         })))
       .catch((err) => setError(err.message));
-  }, [api, token]);
+  }, [api]);
+
+  // Check if there is a valid refresh token on mount and attempt to refresh the JWT
+  useEffect(() => {
+    const checkAuth = async () => { 
+      if (!token) {
+        try {
+          const response = await api.refresh();
+          setToken(response.token);
+          console.log(token);
+        } catch (err) {
+          setToken(null); 
+        }
+      }
+    };
+
+    checkAuth();
+  }, []);
+
+  // Catch when the user is null and attempt to refresh user data using the JWT
+  useEffect(() => {
+    const checkUser = async () => { 
+      if (!user && token) {
+        try {
+          const response = await api.getMyUser();
+          setUser(response.data);
+        } catch (err) {
+          console.error('Failed to fetch user data:', err);
+          setToken(null);
+        }
+      }
+    };
+
+    checkUser();
+  }, [token]);
 
   // Handle login
   const login = async (url, username, password) => {
-    const connectedUrl = normalizeApiUrl(url)
+    const connectedUrl = url
     const response = await createApi(connectedUrl).login(username, password)
 
     localStorage.setItem('inventory_api_url', connectedUrl); 

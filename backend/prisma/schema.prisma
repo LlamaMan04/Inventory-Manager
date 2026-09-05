@@ -13,11 +13,24 @@ model User {
   role        Role     @default(USER)
 
   createdAt   DateTime @default(now())
+
+  sessions    Session[]
 }
 
 enum Role {
   ADMIN
   USER
+}
+
+model Session {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  refreshToken String   @unique
+  expiresAt   DateTime
+
+  createdAt   DateTime @default(now())
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Item {

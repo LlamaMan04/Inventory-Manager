@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, Routes, Route } from 'react-router'
 import { Overview } from './Pages/Overview'
 import { StockView } from './Pages/StockView'
@@ -11,7 +11,7 @@ import { Nav } from './Pages/Nav'
 export function Shell({ user, api, data, setData, refresh, error, setError, logout }) {
   // State for notices and errors
   const [notice, setNotice] = useState('')
-  
+
   // Helper function to run an action and refresh data, handling errors and notices
   const run = async (action, message) => { 
     try { 
@@ -23,6 +23,15 @@ export function Shell({ user, api, data, setData, refresh, error, setError, logo
     } catch (err) { 
       setError(err.message) 
     } 
+  }
+
+  if (!user) {
+    return (
+      <div className="loading-screen">
+        <div className="loading-spinner" />
+        <p>Loading...</p>
+      </div>
+    )
   }
 
   return (
