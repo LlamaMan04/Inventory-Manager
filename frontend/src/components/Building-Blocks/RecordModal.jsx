@@ -1,6 +1,18 @@
-
+import { useEffect } from "react";
 
 export function RecordModal({ title, fields, form, setForm, setEditing, save, passwordField }) {
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') setEditing(null);
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [setEditing]);
+
   return (
     <div className="modal-backdrop">
       <form className="modal stack-form" onSubmit={save}>
