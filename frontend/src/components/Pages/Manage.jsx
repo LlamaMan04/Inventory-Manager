@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Page } from './Page'
-import { RecordModal } from '../RecordModal'
+import { RecordModal } from '../Building-Blocks/RecordModal'
 import { Empty } from './Empty'
 
 export function Manage({ title, eyebrow, rows, fields, create, update, remove, run }) {

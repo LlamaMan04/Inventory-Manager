@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Page } from './Page'
+import { Page } from '../Building-Blocks/Page'
 
 export function MoveStock({ data, api, run }) { 
   const [type, setType] = useState('receive'); 

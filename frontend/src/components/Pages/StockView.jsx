@@ -1,6 +1,6 @@
 import { Link } from 'react-router'
-import { Page } from './Page'
-import { Empty } from './Empty'
+import { Page } from '../Building-Blocks/Page'
+import { Empty } from '../Building-Blocks/Empty'
 
 export function StockView({ data }) { 
   return ( 

@@ -1,6 +1,6 @@
 import { Link } from 'react-router'
-import { Page } from './Page'
-import { Metric } from './Metric'
+import { Page } from '../Building-Blocks/Page'
+import { Metric } from '../Building-Blocks/Metric'
 
 export function Overview({ data }) { 
   const units = data.stocks.reduce((sum, stock) => sum + stock.quantity, 0); 

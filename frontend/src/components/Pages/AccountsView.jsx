@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Page } from './Page'
-import { RecordModal } from '../RecordModal'
+import { RecordModal } from '../Building-Blocks/RecordModal'
 
 export function AccountsView({ data, api, run, setData }) {
   const [editing, setEditing] = useState(null)
