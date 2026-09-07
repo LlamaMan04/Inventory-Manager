@@ -6,7 +6,7 @@ import { MoveStock } from './Pages/MoveStock'
 import { Manage } from './Pages/Manage'
 import { AccountsView } from './Pages/AccountsView'
 import { UpdatePassword } from './Pages/UpdatePassword'
-import { Nav } from './Pages/Nav'
+import { Nav } from './Building-Blocks/Nav'
 
 export function Shell({ user, api, data, setData, refresh, error, setError, logout }) {
   // State for notices and errors

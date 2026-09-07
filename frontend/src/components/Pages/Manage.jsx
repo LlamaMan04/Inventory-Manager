@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { Page } from './Page'
+import { Page } from '../Building-Blocks/Page'
 import { RecordModal } from '../Building-Blocks/RecordModal'
-import { Empty } from './Empty'
+import { Empty } from '../Building-Blocks/Empty'
 
 export function Manage({ title, eyebrow, rows, fields, create, update, remove, run }) {
   const [editing, setEditing] = useState(null)

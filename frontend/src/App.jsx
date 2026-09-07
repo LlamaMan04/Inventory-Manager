@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from 'react'
 import { BrowserRouter } from 'react-router'
-import { createApi } from '../api'
+import { createApi } from './api'
 
-import { Shell } from './Shell'
-import { ConnectScreen } from './Pages/ConnectScreen'
+import { Shell } from './components/Shell'
+import { ConnectScreen } from './components/Pages/ConnectScreen'
 
 const initialUrl = localStorage.getItem('inventory_api_url') || 'http://localhost:5001'
 const blank = { items: [], locations: [], stocks: [], users: [] }

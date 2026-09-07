@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Page } from './Page'
+import { Page } from '../Building-Blocks/Page'
 import { RecordModal } from '../Building-Blocks/RecordModal'
 
 export function AccountsView({ data, api, run, setData }) {
