@@ -258,6 +258,41 @@ a {
   color: #52615a; 
 }
 
+.loading-screen {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 18px;
+  padding: 32px;
+  background: #181a23;
+  color: #f4f6f0;
+}
+
+.loading-spinner {
+  width: 48px;
+  height: 48px;
+  border: 3px solid rgba(244, 246, 240, .2);
+  border-top-color: #6deaf3;
+  border-right-color: #6deaf3;
+  border-radius: 50%;
+  animation: loading-spin .85s linear infinite;
+}
+
+.loading-screen p {
+  margin: 0;
+  color: #aab6a9;
+  font: 500 12px 'DM Mono', monospace;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+@keyframes loading-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .primary { 
   background: #182321; 
   border: 0; 
