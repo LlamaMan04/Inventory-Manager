@@ -7,6 +7,7 @@ import { Manage } from './Pages/Manage'
 import { AccountsView } from './Pages/AccountsView'
 import { UpdatePassword } from './Pages/UpdatePassword'
 import { Nav } from './Building-Blocks/Nav'
+import { LoadingScreen } from './Pages/LoadingScreen'
 
 export function Shell({ user, api, data, setData, refresh, error, setError, logout }) {
   // State for notices and errors
@@ -27,10 +28,7 @@ export function Shell({ user, api, data, setData, refresh, error, setError, logo
 
   if (!user) {
     return (
-      <div className="loading-screen">
-        <div className="loading-spinner" />
-        <p>Loading...</p>
-      </div>
+      <LoadingScreen />
     )
   }
 

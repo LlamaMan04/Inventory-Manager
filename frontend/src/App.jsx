@@ -4,6 +4,7 @@ import { createApi } from './api'
 
 import { Shell } from './components/Shell'
 import { ConnectScreen } from './components/Pages/ConnectScreen'
+import { LoadingScreen } from './components/Pages/LoadingScreen'
 
 const initialUrl = localStorage.getItem('inventory_api_url') || 'http://localhost:5001'
 const blank = { items: [], locations: [], stocks: [], users: [] }
@@ -14,6 +15,7 @@ export default function App() {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('inventory_user') || 'null'))
   const [data, setData] = useState(blank)
   const [error, setError] = useState('')
+  const [loading, setLoading] = useState(true)
 
   const api = useMemo(() => createApi(apiUrl, token, setToken), [apiUrl, token])
 
@@ -40,20 +42,24 @@ export default function App() {
           locations: locations.data, 
           stocks: stocks.data 
         })))
-      .catch((err) => setError(err.message));
+      .catch((err) => {
+        setError(err.message);
+      });
   }, [api]);
 
   // Check if there is a valid refresh token on mount and attempt to refresh the JWT
   useEffect(() => {
     const checkAuth = async () => { 
-      if (!token) {
-        try {
-          const response = await api.refresh();
-          setToken(response.token);
-          console.log(token);
-        } catch (err) {
-          setToken(null); 
-        }
+      // Detect when the server is unavailable and redirect to the connect screen
+      // Attempt to refresh the token using the refresh token. Also runs on initial load
+      // to detect when the server is offline and redirect to the connect screen. 
+      try {
+        const response = await api.refresh();
+        setToken(response.token);
+      } catch (err) {
+        setToken(null); 
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -68,7 +74,6 @@ export default function App() {
           const response = await api.getMyUser();
           setUser(response.data);
         } catch (err) {
-          console.error('Failed to fetch user data:', err);
           setToken(null);
         }
       }
@@ -106,6 +111,11 @@ export default function App() {
     setUser(null); 
     setData(blank);
   }
+
+  // Render a loading screen if necessary
+  if (loading) return (
+    <LoadingScreen />
+  )
 
   // Render the login screen in not authenticated
   if (!token) return (
