@@ -166,6 +166,10 @@ const removeUser = async (req, res) => {
 const updateUserRole = async (req, res) => {
   const userId = parseInt(req.params.id);
 
+  if (req.user.id === userId) {
+    return res.status(400).json({ message: "You cannot change your own role" });
+  }
+
   const { role } = req.body;
 
   try {
