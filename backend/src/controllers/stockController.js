@@ -60,6 +60,7 @@ export const createStock = async (req, res) => {
         locationId: parseInt(locationId)
       }
     });
+    await removeEmptyStock(prisma);
     res.status(201).json({ 
       status: "success",
       data: newStock,
@@ -85,6 +86,7 @@ export const updateStock = async (req, res) => {
         locationId: parseInt(locationId)
       }
     });
+    await removeEmptyStock(prisma);
     res.status(200).json({ 
       status: "success",
       data: updatedStock,
@@ -139,6 +141,8 @@ export const applyStockMovements = async (req, res) => {
           }
         }
       }
+
+      await removeEmptyStock(transaction);
     });
 
     res.status(200).json({ status: "success", message: "Stock movements applied successfully" });
@@ -164,3 +168,7 @@ export const deleteStock = async (req, res) => {
     });
   }
 }
+
+const removeEmptyStock = (client) => client.stock.deleteMany({
+  where: { quantity: 0 }
+});
