@@ -10,8 +10,14 @@ export function AccountsView({ data, api, run, setData }) {
 
   const save = (e) => {
     e.preventDefault()
+    if (!editing.id && form.password !== form.confirmPassword) {
+      return run(() => Promise.reject(new Error('Passwords do not match.')), '')
+    }
+
+    const createAccount = ({ username, password, role }) => api.register({ username, password, role })
+
     run(
-      () => editing.id ? api.updateUser(editing.id, form) : api.register(form),
+      () => editing.id ? api.updateUser(editing.id, { role: form.role }) : createAccount(form),
       editing.id ? 'Account updated.' : 'Account created.'
     ).then(() => {
       setEditing(null)
@@ -49,15 +55,15 @@ export function AccountsView({ data, api, run, setData }) {
       </div>
       {editing && <RecordModal 
         title={editing.id ? 'Update access' : 'Create account'} 
-        fields={['username', 'password', 'role']} 
+        fields={editing.id ? ['role'] : ['username', 'password', 'confirmPassword', 'role']} 
         form={form} setForm={setForm} 
-        setEditing={setEditing} save={save} passwordField 
+        setEditing={setEditing} save={save} 
       />}
       {deleting && <ConfirmModal
         title={`Remove ${deleting.username}?`}
         message="This action cannot be undone."
         onCancel={() => setDeleting(null)}
-        onConfirm={() => run(() => api.removeUser(deleting.id), 'Account removed.').then((success) => {
+        onConfirm={() => run(() => api.removeUser(deleting.id), 'Account removed.').then(() => {
           setDeleting(null)
         })}
       />}

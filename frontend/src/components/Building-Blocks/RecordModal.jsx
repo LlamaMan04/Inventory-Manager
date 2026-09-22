@@ -28,10 +28,10 @@ export function RecordModal({ title, fields, form, setForm, setEditing, save, pa
             </select>
              : 
             <input 
-              type={field === 'password' ? 'password' : 'text'} 
+              type={field === 'password' || field === 'confirmPassword' ? 'password' : 'text'} 
               value={form[field] || ''} 
               onChange={(e) => setForm({ ...form, [field]: e.target.value })} 
-              required={field === 'name' || field === 'username' || (field === 'password' && !passwordField)} 
+              required={field === 'name' || field === 'username' || field === 'confirmPassword'} 
             />
           }
         </label>)}
