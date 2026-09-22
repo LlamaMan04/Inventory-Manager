@@ -1,5 +1,6 @@
 import { prisma } from "../config/db.js";
 import { generateJWT, generateRefreshToken } from "../utils/generateToken.js";
+import { handlePrismaError } from "../utils/handlePrismaError.js";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
 
@@ -174,7 +175,7 @@ const updateUserRole = async (req, res) => {
     });
     res.status(200).json({ status: "success", data: { id: user.id, username: user.username, role: user.role }, message: "User role updated successfully" });
   } catch (error) {
-    res.status(400).json({ status: "fail", message: "Unable to update user role" });
+    return handlePrismaError(error, res, "Unable to update user role", 400);
   }
 }
 

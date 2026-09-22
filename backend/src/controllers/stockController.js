@@ -1,4 +1,5 @@
 import { prisma } from "../config/db.js";
+import { handlePrismaError } from "../utils/handlePrismaError.js";
 
 export const getAllStock = async (req, res) => {
   try {
@@ -14,10 +15,7 @@ export const getAllStock = async (req, res) => {
       message: "Stocks retrieved successfully"
     });
   } catch (error) {
-    res.status(500).json({ 
-      status: "error",
-      message: "An error occurred while retrieving stocks"
-    });
+    return handlePrismaError(error, res, "An error occurred while retrieving stocks");
   }
 }
 
@@ -43,10 +41,7 @@ export const getStockById = async (req, res) => {
       message: "Stock retrieved successfully"
     });
   } catch (error) {
-    res.status(500).json({ 
-      status: "error",
-      message: "An error occurred while retrieving the stock"
-    });
+    return handlePrismaError(error, res, "An error occurred while retrieving the stock");
   }
 }
 
@@ -67,10 +62,7 @@ export const createStock = async (req, res) => {
       message: "Stock created successfully"
     });
   } catch (error) {
-    res.status(500).json({ 
-      status: "error",
-      message: "An error occurred while creating the stock"
-    });
+    return handlePrismaError(error, res, "An error occurred while creating the stock");
   }
 }
 
@@ -93,10 +85,7 @@ export const updateStock = async (req, res) => {
       message: "Stock updated successfully"
     });
   } catch (error) {
-    res.status(500).json({ 
-      status: "error",
-      message: "An error occurred while updating the stock"
-    });
+    return handlePrismaError(error, res, "An error occurred while updating the stock");
   }
 }
 
@@ -116,7 +105,9 @@ export const applyStockMovements = async (req, res) => {
           : null;
 
         if (move.type !== "receive" && (!source || source.quantity < quantity)) {
-          throw new Error(`Not enough stock at the source location for item ${itemId}.`);
+          const movementError = new Error(`Not enough stock at the source location for item ${itemId}.`);
+          movementError.statusCode = 400;
+          throw movementError;
         }
 
         if (source) {
@@ -147,7 +138,7 @@ export const applyStockMovements = async (req, res) => {
 
     res.status(200).json({ status: "success", message: "Stock movements applied successfully" });
   } catch (error) {
-    res.status(400).json({ status: "error", message: error.message || "An error occurred while applying stock movements" });
+    return handlePrismaError(error, res, "An error occurred while applying stock movements");
   }
 }
 
@@ -162,10 +153,7 @@ export const deleteStock = async (req, res) => {
       message: "Stock deleted successfully"
     });
   } catch (error) {
-    res.status(500).json({ 
-      status: "error",
-      message: "An error occurred while deleting the stock"
-    });
+    return handlePrismaError(error, res, "An error occurred while deleting the stock");
   }
 }
 

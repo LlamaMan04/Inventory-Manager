@@ -1,4 +1,5 @@
 import { prisma } from "../config/db.js";
+import { handlePrismaError } from "../utils/handlePrismaError.js";
 
 export const getAllLocations = async (req, res) => {
   try {
@@ -9,10 +10,7 @@ export const getAllLocations = async (req, res) => {
       message: "Locations retrieved successfully"
     });
   } catch (error) {
-    res.status(500).json({
-      status: "error",
-      message: "An error occurred while retrieving locations"
-    });
+    return handlePrismaError(error, res, "An error occurred while retrieving locations");
   }
 };
 
@@ -26,7 +24,7 @@ export const getLocationById = async (req, res) => {
     }
     res.status(200).json({ status: "success", data: location, message: "Location retrieved successfully" });
   } catch (error) {
-    res.status(500).json({ status: "error", message: "An error occurred while retrieving the location" });
+    return handlePrismaError(error, res, "An error occurred while retrieving the location");
   }
 };
 
@@ -36,7 +34,7 @@ export const createLocation = async (req, res) => {
     const location = await prisma.location.create({ data: { name, description } });
     res.status(201).json({ status: "success", data: location, message: "Location created successfully" });
   } catch (error) {
-    res.status(500).json({ status: "error", message: "An error occurred while creating the location" });
+    return handlePrismaError(error, res, "An error occurred while creating the location");
   }
 };
 
@@ -53,7 +51,7 @@ export const updateLocation = async (req, res) => {
     });
     res.status(200).json({ status: "success", data: location, message: "Location updated successfully" });
   } catch (error) {
-    res.status(500).json({ status: "error", message: "An error occurred while updating the location" });
+    return handlePrismaError(error, res, "An error occurred while updating the location");
   }
 };
 
@@ -62,6 +60,6 @@ export const deleteLocation = async (req, res) => {
     await prisma.location.delete({ where: { id: parseInt(req.params.id) } });
     res.status(200).json({ status: "success", message: "Location deleted successfully" });
   } catch (error) {
-    res.status(500).json({ status: "error", message: "An error occurred while deleting the location" });
+    return handlePrismaError(error, res, "An error occurred while deleting the location");
   }
 };

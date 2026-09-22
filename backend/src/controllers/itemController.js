@@ -1,4 +1,5 @@
 import { prisma } from "../config/db.js";
+import { handlePrismaError } from "../utils/handlePrismaError.js";
 
 export const getAllItems = async (req, res) => {
   try {
@@ -9,10 +10,7 @@ export const getAllItems = async (req, res) => {
       message: "Items retrieved successfully"
     });
   } catch (error) {
-    res.status(500).json({
-      status: "error",
-      message: "An error occurred while retrieving items"
-    });
+    return handlePrismaError(error, res, "An error occurred while retrieving items");
   }
 };
 
@@ -26,7 +24,7 @@ export const getItemById = async (req, res) => {
     }
     res.status(200).json({ status: "success", data: item, message: "Item retrieved successfully" });
   } catch (error) {
-    res.status(500).json({ status: "error", message: "An error occurred while retrieving the item" });
+    return handlePrismaError(error, res, "An error occurred while retrieving the item");
   }
 };
 
@@ -36,7 +34,7 @@ export const createItem = async (req, res) => {
     const item = await prisma.item.create({ data: { name, description, barcode } });
     res.status(201).json({ status: "success", data: item, message: "Item created successfully" });
   } catch (error) {
-    res.status(500).json({ status: "error", message: "An error occurred while creating the item" });
+    return handlePrismaError(error, res, "An error occurred while creating the item");
   }
 };
 
@@ -54,7 +52,7 @@ export const updateItem = async (req, res) => {
     });
     res.status(200).json({ status: "success", data: item, message: "Item updated successfully" });
   } catch (error) {
-    res.status(500).json({ status: "error", message: "An error occurred while updating the item" });
+    return handlePrismaError(error, res, "An error occurred while updating the item");
   }
 };
 
@@ -63,6 +61,6 @@ export const deleteItem = async (req, res) => {
     await prisma.item.delete({ where: { id: parseInt(req.params.id) } });
     res.status(200).json({ status: "success", message: "Item deleted successfully" });
   } catch (error) {
-    res.status(500).json({ status: "error", message: "An error occurred while deleting the item" });
+    return handlePrismaError(error, res, "An error occurred while deleting the item");
   }
 };
