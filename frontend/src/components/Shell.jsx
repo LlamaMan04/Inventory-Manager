@@ -17,9 +17,8 @@ export function Shell({ user, api, data, setData, refresh, error, setError, logo
   useEffect(() => {
     if (directHome) {
       navigate('/', { replace: true })
-      setDirectHome(false)
     }
-  }, [directHome, navigate])
+  }, [])
 
   // Helper function to run an action and refresh data, handling errors and notices
   const run = async (action, message) => { 
