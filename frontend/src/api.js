@@ -92,7 +92,7 @@ export function createApi(baseUrl, token, setToken) {
     users: (options) => request('/auth/users', { method: 'GET', params: options }),
     getMyUser: () => request('/auth/users/me', { method: 'GET' }),
     register: (data) => request('/auth/register', { method: 'POST', data: JSON.stringify(data) }),
-    updateUser: (id, data) => request(`/auth/${id}`, { method: 'PATCH', data: JSON.stringify(data) }),
+    updateUser: (id, data) => request(`/auth/role/${id}`, { method: 'PATCH', data: JSON.stringify(data) }),
     removeUser: (id) => request(`/auth/remove/${id}`, { method: 'DELETE' }),
     updatePassword: (data) => request('/auth/update-password', { method: 'POST', data: JSON.stringify(data) }),
     items: () => request('/item'),
