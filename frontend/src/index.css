@@ -536,6 +536,34 @@ td small {
   margin: 0 0 8px; 
 }
 
+.confirmation-modal > p:not(.eyebrow) {
+  color: #718078;
+  font-size: 13px;
+  margin: 0 0 24px;
+}
+
+.confirmation-actions {
+  display: flex;
+  justify-content: end;
+  gap: 12px;
+}
+
+.confirmation-actions button {
+  border: 0;
+  padding: 11px 16px;
+  font-size: 12px;
+}
+
+.confirmation-actions button:first-child {
+  background: #e2ebec;
+  color: #52615a;
+}
+
+.confirmation-actions .danger-button {
+  background: #b14f3f;
+  color: #fff;
+}
+
 .modal label { 
   font-size: 12px; 
   color: #52615a; 

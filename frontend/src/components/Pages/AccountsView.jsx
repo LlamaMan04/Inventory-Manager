@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react'
 import { Page } from '../Building-Blocks/Page'
 import { RecordModal } from '../Building-Blocks/RecordModal'
+import { ConfirmModal } from '../Building-Blocks/ConfirmModal'
 
 export function AccountsView({ data, api, run, setData }) {
   const [editing, setEditing] = useState(null)
   const [form, setForm] = useState({ role: 'USER' })
+  const [deleting, setDeleting] = useState(null)
 
   const save = (e) => {
     e.preventDefault()
@@ -41,7 +43,7 @@ export function AccountsView({ data, api, run, setData }) {
           </div>
           <div className="record-actions">
             <button onClick={() => { setEditing(account); setForm({ username: account.username, role: account.role }) }}>Edit</button>
-            <button className="danger-text" onClick={() => run(() => api.removeUser(account.id), 'Account removed.')}>Remove</button>
+            <button className="danger-text" onClick={() => setDeleting(account)}>Remove</button>
           </div>
         </article>)}
       </div>
@@ -50,6 +52,14 @@ export function AccountsView({ data, api, run, setData }) {
         fields={['username', 'password', 'role']} 
         form={form} setForm={setForm} 
         setEditing={setEditing} save={save} passwordField 
+      />}
+      {deleting && <ConfirmModal
+        title={`Remove ${deleting.username}?`}
+        message="This action cannot be undone."
+        onCancel={() => setDeleting(null)}
+        onConfirm={() => run(() => api.removeUser(deleting.id), 'Account removed.').then((success) => {
+          setDeleting(null)
+        })}
       />}
     </Page>
   )

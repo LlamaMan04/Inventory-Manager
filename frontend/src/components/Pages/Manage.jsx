@@ -2,10 +2,12 @@ import { useState } from 'react'
 import { Page } from '../Building-Blocks/Page'
 import { RecordModal } from '../Building-Blocks/RecordModal'
 import { Empty } from '../Building-Blocks/Empty'
+import { ConfirmModal } from '../Building-Blocks/ConfirmModal'
 
 export function Manage({ title, eyebrow, rows, fields, create, update, remove, run }) {
   const [editing, setEditing] = useState(null)
   const [form, setForm] = useState({})
+  const [deleting, setDeleting] = useState(null)
 
   const save = (e) => {
     e.preventDefault()
@@ -38,7 +40,7 @@ export function Manage({ title, eyebrow, rows, fields, create, update, remove, r
             <button onClick={() => { setEditing(row); setForm(Object.fromEntries(fields.map((field) => [field, row[field] || '']))) }}>
               Edit
             </button>
-            <button className="danger-text" onClick={() => run(() => remove(row.id), 'Record removed.')}>Remove</button>
+            <button className="danger-text" onClick={() => setDeleting(row)}>Remove</button>
           </div>
         </article>)}
         {!rows.length && <Empty text="Nothing here yet." />}
@@ -47,6 +49,14 @@ export function Manage({ title, eyebrow, rows, fields, create, update, remove, r
         title={editing.id ? 'Update details' : 'Add to the list'} 
         fields={fields} form={form} setForm={setForm} 
         setEditing={setEditing} save={save} 
+      />}
+      {deleting && <ConfirmModal
+        title={`Remove ${deleting.name}?`}
+        message="This action cannot be undone."
+        onCancel={() => setDeleting(null)}
+        onConfirm={() => run(() => remove(deleting.id), 'Record removed.').then((success) => {
+          setDeleting(null)
+        })}
       />}
     </Page>
   )
