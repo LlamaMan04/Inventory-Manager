@@ -81,7 +81,7 @@ export function createApi(baseUrl, token, setToken) {
       return response.data;
     } catch (error) {
       const message = error.response?.data?.message || 'Request failed.';
-      throw new Error(message);
+      throw new Error(message, { cause: error });
     }
   };
 
@@ -104,6 +104,7 @@ export function createApi(baseUrl, token, setToken) {
     updateLocation: (id, data) => request(`/location/${id}`, { method: 'PATCH', data: JSON.stringify(data) }),
     removeLocation: (id) => request(`/location/${id}`, { method: 'DELETE' }),
     stocks: () => request('/stock'),
+    moveStock: (moves) => request('/stock/movements', { method: 'POST', data: JSON.stringify({ moves }) }),
     createStock: (data) => request('/stock', { method: 'POST', data: JSON.stringify(data) }),
     updateStock: (id, data) => request(`/stock/${id}`, { method: 'PATCH', data: JSON.stringify(data) }),
   }
