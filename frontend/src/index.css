@@ -371,6 +371,15 @@ td small {
   align-items: start; 
 }
 
+.move-layout {
+  display: grid;
+  gap: 38px;
+}
+
+.move-layout > form {
+  width: min(100%, 490px);
+}
+
 .panel { 
   padding: 32px; 
 }
@@ -400,6 +409,33 @@ td small {
 .stack-form input:focus, .stack-form select:focus { 
   border-color: #8fae35; 
   box-shadow: 0 0 0 3px #6deaf366; 
+}
+
+.pending-section {
+  min-width: 0;
+}
+
+.pending-table-wrap table {
+  min-width: 760px;
+}
+
+.pending-empty {
+  margin: 0;
+  padding: 35px 22px;
+  color: #718078;
+  font-size: 13px;
+}
+
+.table-action {
+  border: 0;
+  background: none;
+  color: #0f12d3;
+  padding: 0;
+  font-size: 12px;
+}
+
+.finalize-button {
+  margin-top: 16px;
 }
 
 .segmented { 

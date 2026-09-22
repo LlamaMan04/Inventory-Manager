@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Link, Routes, Route } from 'react-router'
 import { Overview } from './Pages/Overview'
 import { StockView } from './Pages/StockView'
@@ -21,8 +21,10 @@ export function Shell({ user, api, data, setData, refresh, error, setError, logo
       setError(''); 
       setNotice(message); 
       setTimeout(() => setNotice(''), 3000) 
+      return true
     } catch (err) { 
       setError(err.message) 
+      return false
     } 
   }
 
