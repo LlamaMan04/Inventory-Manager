@@ -57,7 +57,7 @@ export function Shell({ user, api, data, setData, refresh, error, setError, logo
           <Nav to="/stock" text="Stock ledger" />
           <Nav to="/move" text="Move stock" />
           <p className="side-label">Manage</p>
-          <Nav to="/catalog" text="Catalog" />
+          <Nav to="/catalog" text="Items" />
           <Nav to="/locations" text="Locations" />
           {user.role === 'ADMIN' && <Nav to="/accounts" text="Accounts" />}
           <div className="side-footer">
