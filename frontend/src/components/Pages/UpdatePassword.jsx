@@ -2,12 +2,17 @@ import { useState } from 'react'
 import { Page } from '../Building-Blocks/Page'
 
 export function UpdatePassword({ api, run }) {
-  const [form, setForm] = useState({ oldPassword: '', newPassword: '' })
+  const [form, setForm] = useState({ oldPassword: '', newPassword: '', confirmPassword: '' })
   
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault()
-    run(() => api.updatePassword(form), 'Password updated.')
-      .then(() => setForm({ oldPassword: '', newPassword: '' }))
+    if (form.newPassword !== form.confirmPassword) {
+      await run(() => Promise.reject(new Error('New passwords do not match.')), '')
+      return
+    }
+
+    const success = await run(() => api.updatePassword(form), 'Password updated.')
+    if (success) setForm({ oldPassword: '', newPassword: '', confirmPassword: '' })
   }
 
   return (
@@ -30,6 +35,16 @@ export function UpdatePassword({ api, run }) {
             minLength="6" 
             value={form.newPassword} 
             onChange={(e) => setForm({ ...form, newPassword: e.target.value })} 
+            required 
+          />
+        </label>
+        <label>
+          Confirm new password
+          <input 
+            type="password" 
+            minLength="6" 
+            value={form.confirmPassword} 
+            onChange={(e) => setForm({ ...form, confirmPassword: e.target.value })} 
             required 
           />
         </label>
