@@ -16,6 +16,7 @@ export default function App() {
   const [data, setData] = useState(blank)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(true)
+  const [directHome, setDirectHome] = useState(false)
 
   const api = useMemo(() => createApi(apiUrl, token, setToken), [apiUrl, token])
 
@@ -94,6 +95,7 @@ export default function App() {
     setApiUrl(connectedUrl); 
     setToken(response.token); 
     setUser(response.data); 
+    setDirectHome(true)
     setError('')
   }
 
@@ -128,7 +130,9 @@ export default function App() {
       <Shell 
         user={user} api={api} data={data} 
         setData={setData} refresh={refresh} error={error} 
-        setError={setError} logout={logout} 
+        setError={setError} logout={logout}
+        directHome={directHome}
+        setDirectHome={setDirectHome}
       />
     </BrowserRouter>
   )

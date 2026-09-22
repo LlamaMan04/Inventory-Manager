@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { Link, Routes, Route } from 'react-router'
+import { useEffect, useState } from 'react'
+import { Link, Routes, Route, useNavigate } from 'react-router'
 import { Overview } from './Pages/Overview'
 import { StockView } from './Pages/StockView'
 import { MoveStock } from './Pages/MoveStock'
@@ -9,9 +9,17 @@ import { UpdatePassword } from './Pages/UpdatePassword'
 import { Nav } from './Building-Blocks/Nav'
 import { LoadingScreen } from './Pages/LoadingScreen'
 
-export function Shell({ user, api, data, setData, refresh, error, setError, logout }) {
+export function Shell({ user, api, data, setData, refresh, error, setError, logout, directHome, setDirectHome }) {
   // State for notices and errors
   const [notice, setNotice] = useState('')
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (directHome) {
+      navigate('/', { replace: true })
+      setDirectHome(false)
+    }
+  }, [directHome, navigate])
 
   // Helper function to run an action and refresh data, handling errors and notices
   const run = async (action, message) => { 
