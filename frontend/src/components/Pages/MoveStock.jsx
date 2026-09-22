@@ -1,10 +1,23 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Page } from '../Building-Blocks/Page'
+
+const pendingMovesStorageKey = 'inventory_pending_moves'
 
 export function MoveStock({ data, api, run }) {
   const [type, setType] = useState('receive')
   const [form, setForm] = useState({ itemId: '', barcode: '', from: '', to: '', quantity: '' })
-  const [pending, setPending] = useState([])
+  const [pending, setPending] = useState(() => {
+    try {
+      const storedMoves = sessionStorage.getItem(pendingMovesStorageKey)
+      return storedMoves ? JSON.parse(storedMoves) : []
+    } catch {
+      return []
+    }
+  })
+
+  useEffect(() => {
+    sessionStorage.setItem(pendingMovesStorageKey, JSON.stringify(pending))
+  }, [pending])
 
   const change = (key) => (e) => setForm({ ...form, [key]: e.target.value })
 
@@ -48,6 +61,7 @@ export function MoveStock({ data, api, run }) {
   const finalize = () => run(() => api.moveStock(pending), 'Stock movements finalized.').then((success) => {
     if (success) {
       setPending([])
+      sessionStorage.removeItem(pendingMovesStorageKey)
       setForm({ itemId: '', barcode: '', from: '', to: '', quantity: '' })
     }
   })
