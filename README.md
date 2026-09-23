@@ -10,6 +10,21 @@ Steps to build and/or run the software:
 2.
 3.
 
+Commands to run when updating the software:
+
+`git pull`
+`docker compose --env-file .env.production -f compose.production.yml pull`
+`docker compose --env-file .env.production -f compose.production.yml up -d db`
+`docker compose --env-file .env.production  -f compose.production.yml run --rm backend npm run migrate`
+`docker compose --env-file .env.production -f compose.production.yml up -d backend frontend`
+
+Or if the docker compose file is stored locally run these instead:
+
+`docker compose build`
+`docker compose up -d db`
+`docker compose run --rm backend npm run migrate`
+`docker compose up -d backend frontend`
+
 Instructions for using the software:
 
 1. Authenticate web interface with backend. Use the default admin account, username 'Admin', password 'password123', as well as the URL or IP address of your hosted backend. 
