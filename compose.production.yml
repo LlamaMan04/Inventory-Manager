@@ -17,7 +17,7 @@ services:
       start_period: 60s
 
   backend:
-    image: ghcr.io/LlamaMan04/inventory-backend:${IMAGE_TAG:-latest}
+    image: ghcr.io/llamaman04/inventory-backend:${IMAGE_TAG:-latest}
     restart: unless-stopped
     env_file:
       - .env.production
@@ -29,7 +29,7 @@ services:
       - "127.0.0.1:5001:${SERVER_PORT:-5001}"
 
   frontend:
-    image: ghcr.io/LlamaMan04/inventory-frontend:${IMAGE_TAG:-latest}
+    image: ghcr.io/llamaman04/inventory-frontend:${IMAGE_TAG:-latest}
     restart: unless-stopped
     depends_on:
       - backend
