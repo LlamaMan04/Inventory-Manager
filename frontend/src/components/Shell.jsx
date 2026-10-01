@@ -108,8 +108,8 @@ export function Shell({ user, api, data, setData, refresh, error, setError, logo
             <Route path="/move" element={<MoveStock data={data} api={api} run={run} />} />
             <Route path="/catalog" element={
               <Manage 
-                title="Catalog" 
-                eyebrow="Manage / catalog" 
+                title="Items" 
+                eyebrow="Manage / Items" 
                 rows={data.items} 
                 fields={['name', 'description', 'barcode']} 
                 create={api.createItem} 

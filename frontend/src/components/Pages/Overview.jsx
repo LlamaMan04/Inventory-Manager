@@ -1,4 +1,3 @@
-import { Link } from 'react-router'
 import { Page } from '../Building-Blocks/Page'
 import { Metric } from '../Building-Blocks/Metric'
 
@@ -11,14 +10,6 @@ export function Overview({ data }) {
         <Metric label="Catalog items" value={data.items.length} detail="Active item records" />
         <Metric label="Locations" value={data.locations.length} detail="Storage destinations" />
       </div>
-      <section className="feature-band">
-        <div>
-          <p className="eyebrow">Today’s focus</p>
-          <h2>Inventory, without<br /><em>the guesswork.</em></h2>
-          <p>Inspect every position, or move stock when the floor changes.</p>
-        </div>
-        <Link className="primary inline" to="/move">Move stock <span>→</span></Link>
-      </section>
     </Page> 
   );
 }
