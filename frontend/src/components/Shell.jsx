@@ -12,6 +12,7 @@ import { LoadingScreen } from './Pages/LoadingScreen'
 export function Shell({ user, api, data, setData, refresh, error, setError, logout, directHome, setDirectHome }) {
   // State for notices and errors
   const [notice, setNotice] = useState('')
+  const [menuOpen, setMenuOpen] = useState(false)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -19,6 +20,17 @@ export function Shell({ user, api, data, setData, refresh, error, setError, logo
       navigate('/', { replace: true })
     }
   }, [])
+
+  useEffect(() => {
+    if (!menuOpen) return
+
+    const closeOnEscape = (event) => {
+      if (event.key === 'Escape') setMenuOpen(false)
+    }
+
+    document.addEventListener('keydown', closeOnEscape)
+    return () => document.removeEventListener('keydown', closeOnEscape)
+  }, [menuOpen])
 
   // Helper function to run an action and refresh data, handling errors and notices
   const run = async (action, message) => { 
@@ -44,13 +56,25 @@ export function Shell({ user, api, data, setData, refresh, error, setError, logo
   return (
     <div className="app-container">
       <header className="top-nav">
+        <button
+          className="menu-toggle"
+          type="button"
+          aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+          aria-expanded={menuOpen}
+          aria-controls="primary-navigation"
+          onClick={() => setMenuOpen((open) => !open)}
+        >
+          <span />
+          <span />
+          <span />
+        </button>
         <Link to="/" className="brand">
           <span>NS</span>
           <div>
             <b>Northstar</b>
             <small>Inventory control</small>
           </div>
-        </Link>
+        </Link>  
         <div className="header-actions">
           <span className="connection"><i /> Connected</span>
           <span className="user-chip">{user.username} <small>{user.role}</small></span>
@@ -58,7 +82,8 @@ export function Shell({ user, api, data, setData, refresh, error, setError, logo
         </div>
       </header>
       <div className="main-layout">
-        <aside className="sidebar">
+        {menuOpen && <button className="sidebar-backdrop" type="button" aria-label="Close navigation menu" onClick={() => setMenuOpen(false)} />}
+        <aside id="primary-navigation" className={`sidebar ${menuOpen ? 'is-open' : ''}`} onClick={() => setMenuOpen(false)}>
           <p className="side-label">Operations</p>
           <Nav to="/" text="Overview" />
           <Nav to="/stock" text="Stock ledger" />
