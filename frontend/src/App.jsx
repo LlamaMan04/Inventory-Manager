@@ -6,7 +6,7 @@ import { Shell } from './components/Shell'
 import { ConnectScreen } from './components/Pages/ConnectScreen'
 import { LoadingScreen } from './components/Pages/LoadingScreen'
 
-const initialUrl = localStorage.getItem('inventory_api_url') || 'http://localhost:5001'
+const initialUrl = localStorage.getItem('inventory_api_url') || 'http://server.address:PORT'
 const blank = { items: [], locations: [], stocks: [], users: [] }
 
 export default function App() {
