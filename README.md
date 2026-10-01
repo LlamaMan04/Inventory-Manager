@@ -16,21 +16,20 @@ Steps to build and/or run the software:
      * `docker compose --env-file .env.production  -f compose.production.yml run --rm backend npm run migrate`
      * `docker compose --env-file .env.production -f compose.production.yml up -d backend frontend`
      * NOTE: After running the second command you will need to wait approximately 20 seconds for the database container to fully spin up and report a 'healthy' status before the third command will execute properly. 
-     * ANOTHER NOTE: the '--env-file .env.production' and '-f compose.production.yml' arguments can be omitted by renaming the .env.production file to '.env' and the compose.production file to 'compose.yml'.
    These commands will pull the docker images from the Github Container Repository, Initialize the database, populate the database with the correct initial data, and then spin up the front and back ends. 
-5. To facilitate access to the application you will also need to setup a reverse proxy or another way of exposing the correct ports to the internet. This will vary greatly by implementation, so details are not provided here. 
+5. To facilitate access to the application you will also need to setup a reverse proxy or another way of exposing the correct ports to the internet. This will vary greatly by implementation, so details are not provided here. The frontend app will be listening on localhost port 8080 and the backend API will be listening on port 5001 by default. This can be modified in the docker compose file if needed. 
 
 Commands to run when updating the software:
 
-`docker compose down`
-`docker compose --env-file .env.production -f compose.production.yml pull`
-`docker compose --env-file .env.production -f compose.production.yml up -d db` (Pause briefly after running to allow the database to spin back up)
-`docker compose --env-file .env.production  -f compose.production.yml run --rm backend npm run migrate`
-`docker compose --env-file .env.production -f compose.production.yml up -d backend frontend`
+ * `docker compose --env-file .env.production -f compose.production.yml down` 
+ * `docker compose --env-file .env.production -f compose.production.yml pull`
+ * `docker compose --env-file .env.production -f compose.production.yml up -d db` (Pause briefly after running to allow the database to spin back up)
+ * `docker compose --env-file .env.production  -f compose.production.yml run --rm backend npm run migrate`
+ * `docker compose --env-file .env.production -f compose.production.yml up -d backend frontend`
 
 Instructions for using the software:
 
-1. Authenticate web interface with backend. Use the default admin account, username 'Admin', password 'password123', as well as the URL or IP address of your hosted backend. 
+1. Authenticate the web interface with backend. Use the default admin account, username 'Admin', password 'password123', as well as the URL or IP address of your hosted backend. 
 2. Once logged in as an admin, configure accounts as needed in the Manage/Accounts window. 
 3. As any user, configure location and item records in the Manage/Locations and Manage/Items windows. 
 4. Record and monitor stock levels using the Stock Ledger and Move Stock windows. 
@@ -39,7 +38,7 @@ Instructions for using the software:
 
 To recreate the development environment, you need the following software and/or libraries with the specified versions:
 
-*NOTE: The project contains two separate projects created with npm. Running `npm install` in the project root directory will not install the needed dependencies, it must be run from both the 'frontend' and 'backend' directories. Running that command in the two directories will install all the needed dependencies, but they are listed here as well.*
+*NOTE: The project contains two separate projects created with npm. Running `npm install` in the project root directory will not install the needed dependencies, it must be run from both the 'frontend' and 'backend' directories. Running that command in the two directories will install all the needed dependencies, but the primary modules that were used are listed here as well.*
 
 #### Full Stack:
 * npm 11.17.0
