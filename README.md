@@ -1,6 +1,6 @@
 # Inventory Manager
 
-A simple inventory management application designed to be self-hosted. The MariaDB database and backend Express api will be hosted on a server using docker, and the frontend React app will be used to interface with it. 
+A simple inventory management application designed to be self-hosted. The MariaDB database and backend Express api will be hosted on a server using docker, and the frontend React app will be used to interface with it. Also contains a mobile app built with React Native that
 
 ## Instructions for Build and Use
 
@@ -26,6 +26,10 @@ Commands to run when updating the software:
  * `docker compose --env-file .env.production -f compose.production.yml up -d db` (Pause briefly after running to allow the database to spin back up)
  * `docker compose --env-file .env.production  -f compose.production.yml run --rm backend npm run migrate`
  * `docker compose --env-file .env.production -f compose.production.yml up -d backend frontend`
+
+For the mobile app:
+1. Install on your mobile device
+2. Enjoy your app...
 
 Instructions for using the software:
 
@@ -72,5 +76,5 @@ The following items I plan to fix, improve, and/or add to this project in the fu
 
 * [ ] Automated deployment of code changes to docker image
 * [ ] Support for barcode scanners
-* [ ] Mobile App
+* [x] Mobile App
 
