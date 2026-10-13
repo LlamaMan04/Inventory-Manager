@@ -1,5 +1,15 @@
 import type { ReactNode } from "react";
-import { ActivityIndicator, Pressable, RefreshControl, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  RefreshControl,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import type { Tab } from "@/app";
 import { Toast } from "@/components";
 import { colors } from "@/components/theme";
@@ -74,22 +84,28 @@ export function AppScreen({
   notice?: string;
 }) {
   return (
-    <ScrollView
-      style={styles.scroll}
-      contentContainerStyle={styles.content}
-      refreshControl={
-        <RefreshControl
-          refreshing={refreshing}
-          onRefresh={onRefresh}
-          tintColor={colors.ink}
-        />
-      }
-      keyboardShouldPersistTaps="handled"
+    <KeyboardAvoidingView
+      style={styles.keyboardAvoidingView}
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
     >
-      <Toast message={notice} />
-      <Toast message={error} type="error" />
-      {children}
-    </ScrollView>
+      <ScrollView
+        style={styles.scroll}
+        contentContainerStyle={styles.content}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={colors.ink}
+          />
+        }
+        keyboardShouldPersistTaps="handled"
+        keyboardDismissMode="on-drag"
+      >
+        <Toast message={notice} />
+        <Toast message={error} type="error" />
+        {children}
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -153,9 +169,12 @@ const styles = StyleSheet.create({
   scroll: { 
     flex: 1 
   },
+  keyboardAvoidingView: {
+    flex: 1,
+  },
   content: { 
     padding: 18, 
-    paddingBottom: 30, 
+    paddingBottom: 140,
     flexGrow: 1 
   },
   tabs: { 
