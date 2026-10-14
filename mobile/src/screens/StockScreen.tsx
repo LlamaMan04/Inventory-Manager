@@ -1,19 +1,38 @@
 import { useMemo, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { EmptyState, Field, PrimaryButton, ScreenHeader, colors } from "@/components";
+import { EmptyState, Field, PrimaryButton, ScreenHeader, SegmentedControl, colors } from "@/components";
 import type { InventoryData, Stock } from "@/types";
+
+type SortField = "name" | "quantity" | "location";
+type SortDirection = "ascending" | "descending";
 
 // Lets users search current stock positions and jump to movement entry.
 export function StockScreen({ data, onMove }: { data: InventoryData; onMove: () => void }) {
   const [query, setQuery] = useState("");
+  const [sortField, setSortField] = useState<SortField>("name");
+  const [sortDirection, setSortDirection] = useState<SortDirection>("ascending");
   const stocks = useMemo(
-    () =>
-      data.stocks.filter((stock) =>
+    () => {
+      const normalizedQuery = query.trim().toLowerCase();
+      const filtered = data.stocks.filter((stock) =>
         [stock.item?.name, stock.item?.barcode, stock.location?.name].some((value) =>
-          value?.toLowerCase().includes(query.trim().toLowerCase()),
+          value?.toLowerCase().includes(normalizedQuery),
         ),
-      ),
-    [data.stocks, query],
+      );
+
+      const sorted = [...filtered].sort((left, right) => {
+        const comparison = sortField === "quantity"
+          ? left.quantity - right.quantity
+          : sortField === "location"
+            ? (left.location?.name || "Unknown location").localeCompare(right.location?.name || "Unknown location")
+            : (left.item?.name || `Item #${left.itemId}`).localeCompare(right.item?.name || `Item #${right.itemId}`);
+
+        return sortDirection === "ascending" ? comparison : -comparison;
+      });
+
+      return sorted;
+    },
+    [data.stocks, query, sortDirection, sortField],
   );
 
   return (
@@ -31,6 +50,26 @@ export function StockScreen({ data, onMove }: { data: InventoryData; onMove: () 
         placeholder="Item, barcode, or location"
         autoCapitalize="none"
       />
+      <View style={styles.sortControls}>
+        <Text style={styles.sortLabel}>Sort by</Text>
+        <SegmentedControl
+          options={[
+            { value: "name" as const, label: "Name" },
+            { value: "quantity" as const, label: "Quantity" },
+            { value: "location" as const, label: "Location" },
+          ]}
+          value={sortField}
+          onChange={setSortField}
+        />
+        <SegmentedControl
+          options={[
+            { value: "ascending" as const, label: "Ascending" },
+            { value: "descending" as const, label: "Descending" },
+          ]}
+          value={sortDirection}
+          onChange={setSortDirection}
+        />
+      </View>
       <View style={styles.list}>
         {stocks.map((stock) => <StockCard key={stock.id} stock={stock} />)}
         {!stocks.length ? (
@@ -69,6 +108,15 @@ const styles = StyleSheet.create({
   list: { 
     gap: 10, 
     marginTop: 17 
+  },
+  sortControls: {
+    gap: 8,
+    marginTop: 16,
+  },
+  sortLabel: {
+    color: colors.inkMuted,
+    fontSize: 13,
+    fontWeight: "700",
   },
   card: { 
     backgroundColor: colors.panel, 

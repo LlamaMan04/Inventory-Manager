@@ -78,7 +78,10 @@ export class InventoryApi {
 
   // Changes a user's role.
   updateUser(id: number, role: UserRole) {
-    return this.request(`/auth/role/${id}`, { method: "PATCH", body: JSON.stringify({ role }) });
+    return this.request<ApiResponse<User>>(`/auth/role/${id}`, {
+      method: "PATCH",
+      body: JSON.stringify({ role }),
+    });
   }
 
   // Removes a user account.

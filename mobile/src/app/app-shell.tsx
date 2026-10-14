@@ -1,8 +1,6 @@
 import type { ReactNode } from "react";
 import {
   ActivityIndicator,
-  KeyboardAvoidingView,
-  Platform,
   Pressable,
   RefreshControl,
   ScrollView,
@@ -84,28 +82,24 @@ export function AppScreen({
   notice?: string;
 }) {
   return (
-    <KeyboardAvoidingView
-      style={styles.keyboardAvoidingView}
-      behavior={Platform.OS === "ios" ? "padding" : undefined}
+    <ScrollView
+      style={styles.scroll}
+      contentContainerStyle={styles.content}
+      automaticallyAdjustKeyboardInsets
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+          tintColor={colors.ink}
+        />
+      }
+      keyboardShouldPersistTaps="handled"
+      keyboardDismissMode="on-drag"
     >
-      <ScrollView
-        style={styles.scroll}
-        contentContainerStyle={styles.content}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-            tintColor={colors.ink}
-          />
-        }
-        keyboardShouldPersistTaps="handled"
-        keyboardDismissMode="on-drag"
-      >
-        <Toast message={notice} />
-        <Toast message={error} type="error" />
-        {children}
-      </ScrollView>
-    </KeyboardAvoidingView>
+      <Toast message={notice} />
+      <Toast message={error} type="error" />
+      {children}
+    </ScrollView>
   );
 }
 
@@ -168,9 +162,6 @@ const styles = StyleSheet.create({
   },
   scroll: { 
     flex: 1 
-  },
-  keyboardAvoidingView: {
-    flex: 1,
   },
   content: { 
     padding: 18, 

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { StatusBar, View } from "react-native";
+import { KeyboardAvoidingView, Platform, StatusBar, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { InventoryApi, normalizeApiUrl } from "@/lib/api";
 import { storage } from "@/lib/storage";
@@ -202,11 +202,17 @@ export default function Index() {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#0A1715" }} edges={["top", "bottom"]}>
       <StatusBar barStyle="light-content" />
-      <AppHeader onSignOut={signOut} />
-      <View style={{ flex: 1, backgroundColor: "#F4F8F7" }}>
-        <AppScreen {...screenProps}>{screen}</AppScreen>
-      </View>
-      <BottomTabs active={activeTab} onChange={setActiveTab} isAdmin={user.role === "ADMIN"} />
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={0}
+      >
+        <AppHeader onSignOut={signOut} />
+        <View style={{ flex: 1, backgroundColor: "#F4F8F7" }}>
+          <AppScreen {...screenProps}>{screen}</AppScreen>
+        </View>
+        <BottomTabs active={activeTab} onChange={setActiveTab} isAdmin={user.role === "ADMIN"} />
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
